@@ -1,6 +1,6 @@
-﻿using System.Text;
-using RabbitMQ.Client;
+﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
 
 var factory = new ConnectionFactory { HostName = "localhost" };
 
@@ -21,6 +21,10 @@ consumer.Received += (model, ea) =>
     var body = ea.Body.ToArray();
     var message = Encoding.UTF8.GetString(body);
     Console.WriteLine($" [x] Received {message}");
+    int dots = message.Split('.').Length - 1;
+    Thread.Sleep(dots * 1000);
+
+    Console.WriteLine(" [x] Done");
 };
 
 channel.BasicConsume(queue: "hello",
